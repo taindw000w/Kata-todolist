@@ -2,9 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import "./taskList.css";
-import Task from "../task";
+import { Task } from "../task/task";
 
-const TaskList = ({
+export const TaskList = ({
   tasksData,
   filter,
   onFinishEditing,
@@ -21,12 +21,11 @@ const TaskList = ({
     }
 
     const inputField = taskData.isEditing ? (
-      <form
-        onSubmit={(event) => {
+      <form onSubmit={(event) => {
           event.preventDefault();
           onFinishEditing(taskData.id);
-        }}
-      >
+        }} className="editing-process">
+        <button className="btn btn-change-behind">EDIT</button>
         <input
           type="text"
           className="edit"
@@ -75,4 +74,3 @@ TaskList.propTypes = {
   tasksData: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default TaskList;

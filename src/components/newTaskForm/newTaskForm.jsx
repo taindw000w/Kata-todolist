@@ -3,19 +3,23 @@ import PropTypes from "prop-types";
 
 import "./newTaskForm.css";
 
-export default class NewTaskForm extends React.Component {
+export class NewTaskForm extends React.Component {
   constructor(props) {
     super(props);
 
-    const { onAdd, initialLabel } = this.props;
+    const { initialLabel } = this.props;
 
     this.state = {
       label: initialLabel,
     };
+  }
 
-    this.handleSubmit = (event) => {
-      const { label } = this.state;
 
+  render() {
+    const { onAdd, initialLabel } = this.props;
+    const { label } = this.state;
+
+    const handleSubmit = (event) => {
       event.preventDefault();
       onAdd(label);
       this.setState({
@@ -23,21 +27,17 @@ export default class NewTaskForm extends React.Component {
       });
     };
 
-    this.handleChange = (event) => {
+    const handleChange = (event) => {
       this.setState({
         label: event.target.value,
       });
     };
-  }
-
-  render() {
-    const { label } = this.state;
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <input
           className="new-todo"
-          onChange={this.handleChange}
+          onChange={handleChange}
           value={label}
           placeholder="What needs to be done?"
         />

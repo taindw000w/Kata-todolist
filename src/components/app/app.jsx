@@ -3,14 +3,15 @@ import PropTypes from "prop-types";
 
 import "./app.css";
 
-import TaskList from "../taskList";
-import Footer from "../footer";
-import NewTaskForm from "../newTaskForm";
+import { TaskList } from "../taskList/taskList";
+import { Footer } from "../footer/footer";
+import { NewTaskForm } from "../newTaskForm/newTaskForm";
 
-export default class App extends React.Component {
+export class App extends React.Component {
   constructor(props) {
     super(props);
-
+    const { initialTasks, initialFilter } = this.props;
+    
     this.currentID = 1;
 
     this.incrementID = () => {
@@ -34,7 +35,19 @@ export default class App extends React.Component {
       };
     };
 
-    this.addTask = (label) => {
+    this.state = {
+      tasksData: initialTasks.map((task) => {
+        return this.createTask(task.description, task.isDone, task.isEditing);
+      }),
+      filter: initialFilter,
+    };
+
+  }
+
+  render() {
+    const { tasksData, filter } = this.state;
+
+    const addTask = (label) => {
       const newTask = this.createTask(label);
 
       this.setState((state) => {
@@ -46,24 +59,15 @@ export default class App extends React.Component {
       });
     };
 
-    const { initialTasks, initialFilter } = this.props;
-
-    this.state = {
-      tasksData: initialTasks.map((task) => {
-        return this.createTask(task.description, task.isDone, task.isEditing);
-      }),
-      filter: initialFilter,
-    };
-
-    this.findIndexByID = (id) => {
+    const findIndexByID = (id) => {
       const { tasksData } = this.state;
 
       return tasksData.findIndex((task) => task.id === id);
     };
 
-    this.toggleProperty = (property, id) => {
+    const toggleProperty = (property, id) => {
       this.setState((state) => {
-        const index = this.findIndexByID(id);
+        const index = findIndexByID(id);
 
         const modifiedTaskData = {
           ...state.tasksData[index],
@@ -82,9 +86,9 @@ export default class App extends React.Component {
       });
     };
 
-    this.deleteTask = (id) => {
+    const deleteTask = (id) => {
       this.setState((state) => {
-        const index = this.findIndexByID(id);
+        const index = findIndexByID(id);
 
         const newTasksData = [
           ...state.tasksData.slice(0, index),
@@ -97,13 +101,13 @@ export default class App extends React.Component {
       });
     };
 
-    this.handleFilterChange = (newFilter) => {
+    const handleFilterChange = (newFilter) => {
       this.setState({
         filter: newFilter,
       });
     };
 
-    this.clearCompleted = () => {
+    const clearCompleted = () => {
       const { tasksData } = this.state;
 
       const activeTasks = tasksData.filter((task) => !task.isDone);
@@ -113,15 +117,15 @@ export default class App extends React.Component {
       });
     };
 
-    this.countActiveTasks = () => {
+    const countActiveTasks = () => {
       const { tasksData } = this.state;
 
       return tasksData.filter((task) => !task.isDone).length;
     };
 
-    this.changeDescription = (description, id) => {
+    const changeDescription = (description, id) => {
       this.setState((state) => {
-        const index = this.findIndexByID(id);
+        const index = findIndexByID(id);
 
         const modifiedTaskData = {
           ...state.tasksData[index],
@@ -140,9 +144,9 @@ export default class App extends React.Component {
       });
     };
 
-    this.finishEditing = (id) => {
+    const finishEditing = (id) => {
       this.setState((state) => {
-        const index = this.findIndexByID(id);
+        const index = findIndexByID(id);
 
         const modifiedTaskData = {
           ...state.tasksData[index],
@@ -160,32 +164,28 @@ export default class App extends React.Component {
         };
       });
     };
-  }
-
-  render() {
-    const { tasksData, filter } = this.state;
 
     return (
       <div>
         <section className="todoapp">
           <header className="header">
             <h1>todos</h1>
-            <NewTaskForm onAdd={this.addTask} />
+            <NewTaskForm onAdd={addTask}/>
           </header>
           <section className="main">
             <TaskList
               tasksData={tasksData}
-              onToggleProperty={this.toggleProperty}
+              onToggleProperty={toggleProperty}
               filter={filter}
-              onChangeDescription={this.changeDescription}
-              onFinishEditing={this.finishEditing}
-              onDelete={this.deleteTask}
+              onChangeDescription={changeDescription}
+              onFinishEditing={finishEditing}
+              onDelete={deleteTask}
             />
             <Footer
               filter={filter}
-              onFilterChange={this.handleFilterChange}
-              onClearCompleted={this.clearCompleted}
-              activeTasksCount={this.countActiveTasks}
+              onFilterChange={handleFilterChange}
+              onClearCompleted={clearCompleted}
+              activeTasksCount={countActiveTasks}
             />
           </section>
         </section>

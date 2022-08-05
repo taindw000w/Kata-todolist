@@ -2,13 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import "./footer.css";
-import TasksFilter from "../filters";
+import { TasksFilter } from "../filters/filters";
 
-const Footer = ({ activeTasksCount, onFilterChange, onClearCompleted }) => {
+export const Footer = ({ activeTasksCount, onFilterChange, onClearCompleted, filter }) => {
   return (
     <footer className="footer">
       <span className="todo-count">{activeTasksCount()} items left</span>
-      <TasksFilter onFilterChange={onFilterChange} />
+      <TasksFilter onFilterChange={onFilterChange} filter={filter} />
       <button
         type="button"
         onClick={onClearCompleted}
@@ -26,4 +26,4 @@ Footer.propTypes = {
   activeTasksCount: PropTypes.func.isRequired,
 };
 
-export default Footer;
+

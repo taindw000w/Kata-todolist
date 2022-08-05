@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { formatDistanceToNow } from "date-fns";
 
 
-const Task = ({
+export const Task = ({
   description,
   isDone,
   createdDate,
@@ -54,4 +54,4 @@ Task.propTypes = {
   onDelete: PropTypes.func.isRequired,
 };
 
-export default Task;
+
