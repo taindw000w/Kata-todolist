@@ -49,6 +49,7 @@ export class App extends React.Component {
 
     const addTask = (label) => {
       const newTask = this.createTask(label);
+      if (label === '') return null;
 
       this.setState((state) => {
         const newTasksData = [...state.tasksData, newTask];
