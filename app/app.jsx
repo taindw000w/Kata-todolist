@@ -49,11 +49,18 @@ export class App extends React.Component {
   render() {
     const { tasksData, filter} = this.state;
 
-    const addTask = (label, min = 12, sec = 2) => {
-      const newTask = this.createTask(label, ((parseInt(min * 60) + parseInt(sec))));
+    const convertToNumber = (string) => {
+      const integer = parseInt(string, 10);
+      return Number.isNaN(integer) ? 0 : integer;
+    };
 
-      if (label === '' || isNaN(min) || isNaN(sec)) return null;
-      
+    const addTask = (label, min = 0, sec = 0) => {
+      if (label === "" )   return null;
+      const newTask = this.createTask(
+        label,
+        convertToNumber(min) * 60 + convertToNumber(sec)
+      );
+
       this.setState((state) => {
         const newTasksData = [...state.tasksData, newTask];
 
