@@ -21,6 +21,7 @@ export class App extends React.Component {
 
     this.createTask = (
       description,
+      time = 0,
       isDone = false,
       isEditing = false,
       createdDate = new Date(),
@@ -30,6 +31,7 @@ export class App extends React.Component {
         description,
         isDone,
         isEditing,
+        time,
         createdDate,
         id,
       };
@@ -37,7 +39,7 @@ export class App extends React.Component {
 
     this.state = {
       tasksData: initialTasks.map((task) => {
-        return this.createTask(task.description, task.isDone, task.isEditing);
+        return this.createTask(task.description, task.time, task.isDone, task.isEditing);
       }),
       filter: initialFilter,
     };
@@ -45,12 +47,13 @@ export class App extends React.Component {
   }
 
   render() {
-    const { tasksData, filter } = this.state;
+    const { tasksData, filter} = this.state;
 
-    const addTask = (label) => {
-      const newTask = this.createTask(label);
-      if (label === '') return null;
+    const addTask = (label, min = 12, sec = 2) => {
+      const newTask = this.createTask(label, ((parseInt(min * 60) + parseInt(sec))));
 
+      if (label === '' || isNaN(min) || isNaN(sec)) return null;
+      
       this.setState((state) => {
         const newTasksData = [...state.tasksData, newTask];
 
@@ -171,7 +174,9 @@ export class App extends React.Component {
         <section className="todoapp">
           <header className="header">
             <h1>todos</h1>
-            <NewTaskForm onAdd={addTask}/>
+            <NewTaskForm 
+              onAdd={addTask} 
+            />
           </header>
           <section className="main">
             <TaskList
