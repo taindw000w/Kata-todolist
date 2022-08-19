@@ -216,3 +216,4 @@ App.propTypes = {
   initialTasks: PropTypes.arrayOf(PropTypes.object),
   initialFilter: PropTypes.oneOf(["All", "Active", "Completed"]),
 };
+
