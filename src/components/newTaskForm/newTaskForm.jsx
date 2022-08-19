@@ -6,41 +6,58 @@ import "./newTaskForm.css";
 export class NewTaskForm extends React.Component {
   constructor(props) {
     super(props);
-
-    const { initialLabel } = this.props;
+    const { onAdd, initialLabel, initialMinutes, initialSeconds} = this.props;
 
     this.state = {
       label: initialLabel,
+      min: "",
+      sec: "",
+    };
+
+    this.handleSubmit = (event) => {
+      const { label, min, sec } = this.state;
+
+      event.preventDefault();
+      onAdd(label, min, sec);
+      this.setState({
+        label: initialLabel,
+        min: initialMinutes,
+        sec: initialSeconds,
+      });
+    };
+
+    this.handleChange = (event, property) => {
+      this.setState({
+        [property]: event.target.value,
+      });
     };
   }
 
-
   render() {
-    const { onAdd, initialLabel } = this.props;
-    const { label } = this.state;
-
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      onAdd(label);
-      this.setState({
-        label: initialLabel,
-      });
-    };
-
-    const handleChange = (event) => {
-      this.setState({
-        label: event.target.value,
-      });
-    };
+    const { label, min, sec } = this.state;
 
     return (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={this.handleSubmit }>
         <input
+          form="add-task"
           className="new-todo"
-          onChange={handleChange}
+          onChange={(event) => this.handleChange(event, 'label')}
           value={label}
-          placeholder="What needs to be done?"
+          placeholder="Task"
         />
+        <input
+          className="new-todo-form__timer"
+          placeholder="Min"
+          value={min}
+          onChange={(event) => this.handleChange(event, 'min')}
+        />
+        <input
+          className="new-todo-form__timer"
+          placeholder="Sec"
+          value={sec}
+          onChange={(event) => this.handleChange(event, 'sec')}
+        />
+        <input type="submit" className="submit-button" />
       </form>
     );
   }
@@ -48,6 +65,8 @@ export class NewTaskForm extends React.Component {
 
 NewTaskForm.defaultProps = {
   initialLabel: "",
+  initialMinutes: "",
+  initialSeconds: "",
 };
 
 NewTaskForm.propTypes = {

@@ -10,7 +10,7 @@ export const TaskList = ({
   onFinishEditing,
   onChangeDescription,
   onToggleProperty,
-  onDelete,
+  onDelete
 }) => {
   const tasks = tasksData.map((taskData) => {
     if (

@@ -5,9 +5,9 @@ import "./filters.css";
 
 export const TasksFilter = ({ filter, onFilterChange }) => {
   const buttons = [ 
-    { name: 'All', label: 'All'},
-    { name: 'Active', label: 'Active'},
-    { name: 'Completed', label: 'Completed'},
+    { name: 'All', label: 'All' },
+    { name: 'Active', label: 'Active' },
+    { name: 'Completed', label: 'Completed' },
   ]
   const destructureFilters = buttons.map(({name, label}) => {
     const isActive = filter === name;

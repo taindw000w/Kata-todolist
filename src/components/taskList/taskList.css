@@ -78,6 +78,7 @@
 }
 
 .todo-list li label .description {
+	width : 150px;
 	word-break: break-all;
 	display: block;
 	line-height: 1.2;
