@@ -7,16 +7,19 @@ const initialTasks = [
   {
     description: "Completed task",
     isDone: true,
+    seconds: 0,
     isEditing: false,
   },
   {
     description: "Editing task",
     isDone: false,
+    seconds: 0,
     isEditing: true,
   },
   {
     description: "Active task",
     isDone: false,
+    seconds: 0,
     isEditing: false,
   },
 ];
