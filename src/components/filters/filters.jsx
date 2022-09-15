@@ -3,30 +3,50 @@ import PropTypes from "prop-types";
 
 import "./filters.css";
 
-export const TasksFilter = ({ filter, onFilterChange }) => {
-  const buttons = [ 
-    { name: 'All', label: 'All'},
-    { name: 'Active', label: 'Active'},
-    { name: 'Completed', label: 'Completed'},
-  ]
-  const destructureFilters = buttons.map(({name, label}) => {
-    const isActive = filter === name;
-    const className = isActive ? 'selected' : '';
+const classSelected = 'selected';
 
-    return (
-      <li key={name}>
-        <button className={`${className}`} type="button" onClick={()=> onFilterChange(name)}>
-          {label}
+const TasksFilter = ({ onFilterChange }) => {
+  const getFilterButtons = () => {
+    return document.querySelectorAll('.filters button');
+  };
+
+  const onClick = (event) => {
+    if (event.target.classList.contains(classSelected)) {
+      return;
+    }
+
+    const buttons = getFilterButtons();
+    for (const button of buttons) {
+      button.classList.remove(classSelected);
+    }
+
+    event.target.classList.add(classSelected);
+    onFilterChange(event.target.textContent);
+  };
+
+  return (
+    <ul className="filters">
+      <li>
+        <button className="selected" type="button" onClick={onClick}>
+          All
         </button>
       </li>
-    )
-  })
-  
-  return (
-    <ul className="filters">{destructureFilters}</ul>
-  )
-}
+      <li>
+        <button type="button" onClick={onClick}>
+          Active
+        </button>
+      </li>
+      <li>
+        <button type="button" onClick={onClick}>
+          Completed
+        </button>
+      </li>
+    </ul>
+  );
+};
 
 TasksFilter.propTypes = {
-  onFilterChange: PropTypes.func.isRequired
+  onFilterChange: PropTypes.func.isRequired,
 };
+
+export default TasksFilter;

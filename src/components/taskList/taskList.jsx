@@ -4,54 +4,41 @@ import PropTypes from "prop-types";
 import "./taskList.css";
 import { Task } from "../task/task";
 
-export const TaskList = ({
-  tasksData,
-  filter,
-  onFinishEditing,
-  onChangeDescription,
-  onToggleProperty,
-  onDelete,
-}) => {
+export const TaskList = ({ tasksData, filter, onFinishEditing, onChangeDescription, onToggleProperty, onDelete, onTick }) => {
   const tasks = tasksData.map((taskData) => {
-    if (
-      (filter === "Completed" && !taskData.isDone) ||
-      (filter === "Active" && taskData.isDone)
-    ) {
+    if ((filter === 'Completed' && !taskData.isDone) || (filter === 'Active' && taskData.isDone)) {
       return null;
     }
 
     const inputField = taskData.isEditing ? (
-      <form onSubmit={(event) => {
+      <form className="form-edit"
+        onSubmit={(event) => {
           event.preventDefault();
           onFinishEditing(taskData.id);
-        }} className="editing-process">
+        }}
+      >
         <button className="btn btn-change-behind">EDIT</button>
         <input
           type="text"
           className="edit"
           value={taskData.description}
-          onChange={(event) =>
-            onChangeDescription(event.target.value, taskData.id)
-          }
+          onChange={(event) => onChangeDescription(event.target.value, taskData.id)}
         />
       </form>
     ) : null;
 
-    let classNames = "";
+    let classNames = '';
     if (taskData.isDone) {
-      classNames += " completed";
+      classNames += ' completed';
     }
     if (taskData.isEditing) {
-      classNames += " editing";
+      classNames += ' editing';
     }
 
     return (
       <li className={classNames} key={taskData.id}>
-        <Task
-          {...taskData}
-          onToggleProperty={onToggleProperty}
-          onDelete={onDelete}
-        />
+        <Task {...taskData} onToggleProperty={onToggleProperty} onDelete={onDelete} onTick={onTick} />
+
         {inputField}
       </li>
     );
@@ -61,16 +48,17 @@ export const TaskList = ({
 };
 
 TaskList.defaultProps = {
-  filter: "All",
+  filter: 'All',
   tasksData: [],
 };
 
 TaskList.propTypes = {
-  filter: PropTypes.oneOf(["All", "Active", "Completed"]),
+  filter: PropTypes.oneOf(['All', 'Active', 'Completed']),
   onChangeDescription: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onFinishEditing: PropTypes.func.isRequired,
   onToggleProperty: PropTypes.func.isRequired,
   tasksData: PropTypes.arrayOf(PropTypes.object),
+  onTick: PropTypes.func.isRequired,
 };
 
